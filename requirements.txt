@@ -1,0 +1,6 @@
+torch
+pandas
+datasets
+transformers
+transformers[torch]
+nercone-modern
