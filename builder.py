@@ -58,8 +58,8 @@ class NelmTextFileDataset(Dataset):
         return len(self.files)
 
     def __getitem__(self, index) -> dict:
-        path = self.files[index]
-        with open(path, "r") as f:
+        path = self.path.joinpath(self.files[index])
+        with path.open("r") as f:
             text = f.read()
         encoding = self.tokenizer(
             text,
@@ -155,7 +155,7 @@ def main() -> int:
     logger.log("まず、コンテキスト長を設定します。これはモデルの生成できる最大の応答サイズになります。")
     max_length = int_prompt(logger, "コンテキスト長", default=8192)
     logger.log("次にデータセット本体を読み込みます。")
-    logger.log("データセットの形式には、複数のテキストファイルが入ったディレクトリ(textfiles)、AzukiFormat(AzukiF)形式のJSONファイル、またはHuggingFaceリポジトリが利用可能です。")
+    logger.log("データセットの形式には、複数のテキストファイルが入ったディレクトリ(textfile)、AzukiFormat(AzukiF)形式のJSONファイル、またはHuggingFaceリポジトリが利用可能です。")
     dataset_type = logger.prompt("どれを使用しますか？", default="azukif", choices=["textfile", "azukif", "huggingface"], show_default=True)
     if dataset_type == "textfile":
         logger.log("ディレクトリパスを指定してください。")
